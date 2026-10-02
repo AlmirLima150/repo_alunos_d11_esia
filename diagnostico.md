@@ -12,8 +12,8 @@ Atividade sem nota, respondida depois de B1: cerca de 10 minutos, até 26/09/202
 
 | Objetivo | Situação e pergunta |
 |---|---|
-| O1 | Uma ferramenta escreveu uma função em segundos. O que ainda cabe ao engenheiro antes de entregá-la? |
-| O2 | Três execuções retornaram a mesma resposta. Que conclusão isso permite e qual não permite? |
+| O1 | Uma ferramenta escreveu uma função em segundos. O que ainda cabe ao engenheiro antes de entregá-la? | Revisar para ver se está correto
+| O2 | Três execuções retornaram a mesma resposta. Que conclusão isso permite e qual não permite? | 
 | O3 | O time quer usar IA para escrever requisitos, alterar código e publicar a mudança. O grau de autonomia deveria ser igual nessas etapas? Por quê? |
 | O4 | O código e os testes propostos pelo mesmo assistente concordam entre si. O que falta verificar? |
 | O5 | Um log interno contém informações que não aparecem em uma descrição abstrata do problema. Que decisão precisa ser tomada antes de enviá-lo a uma ferramenta? |

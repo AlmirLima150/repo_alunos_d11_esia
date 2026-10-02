@@ -1,20 +1,23 @@
 # Registro individual — AV1.1
 
-**Limite: uma página, incluindo evidências essenciais.** Estudante: ___ — Data: ___
-Origem: cartões C1–C3 fictícios do enunciado.
+**Limite: uma página, incluindo evidências essenciais.** Estudante: Almir de Lima Felix dos Santos — Data: 02/10/26
+Origem: cartões C1–C3 fictícios do enunciado e dados controlados de `caso/chamados.json`.
 
 | Cartão | Processo sem IA / entrada → saída | Modalidade e justificativa ligada ao cartão | Verificação de aceite | Responsável humano |
 |---|---|---|---|---|
-| C1 | | | | |
-| C2 | | | | |
-| C3 | | | | |
+| C1 | O engenheiro lê o contrato R2 e deriva manualmente os critérios de aceite: entrada `[FC-001, FC-002, FC-003]` de `chamados.json` → saída esperada `[FC-001, FC-002]`. | **Com assistência.** O contrato está aprovado, as entradas são fictícias e válidas e o artefato é textual e reversível: um erro custa uma revisão, não um incidente. A IA redige o checklist; eu confiro cada item contra R2. | Confrontar o rascunho com R2: exige inclusão de `aberto` (`FC-001`), de `em_andamento` (`FC-002`), exclusão de `fechado` (`FC-003`) e preservação da ordem, sem acrescentar regra (ex.: ordenar por prioridade). | Pessoa responsável pela manutenção, que pediu os critérios. |
+| C2 | O engenheiro monta a matriz departamento × estado com asserções: `FC-001` para Oficina → `True`; `FC-003` (Oficina, `fechado`) para Oficina → `True`; `FC-002` para Oficina → `False`. | **Com assistência.** A IA redige o código do teste em `unittest` com os registros de `chamados.json`; **os valores esperados são definidos por mim a partir de R3**, não pela IA (oráculo independente). | Inspecionar a asserção negativa crítica: `FC-002` (Laboratório, 2+3=5, alta) deve retornar `False` para Oficina, verificando neste caso de fronteira que prioridade alta não amplia a visibilidade. Conferir também o mesmo departamento com chamado `fechado`. | Autor do teste, com revisão de outra pessoa da equipe. |
+| C3 | A pessoa reuniria a regra nova por escrito, a lista de dados e chamados afetados, os testes do novo comportamento e a identificação de quem aprova; consultaria o dono de R3; só então decidiria → saída: autorização ou indeferimento registrado. | **Sem delegar a decisão.** Não autorizo nas condições atuais: a mudança altera R3 (acesso entre áreas), em produção, com escopo indefinido; um erro expõe chamados a outro departamento e é difícil de desfazer. | Bloquear a implantação até haver: especificação da nova regra, análise dos dados afetados, testes de regressão aprovados e plano de reversão. | Dono da regra R3 (a confirmar, pois o cartão diz que o aprovador não foi definido); a operação não decide sozinha. |
 
-**Trecho essencial de evidência (cartão, entrada/saída ou informação necessária e como sustenta minha escolha):** ___
+**Trecho essencial de evidência (cartão, entrada/saída ou informação necessária e como sustenta minha escolha):**
+Para C2, registro de `chamados.json`: `FC-002` (`departamento: "Laboratório"`, `estado: "em_andamento"`, `impacto: 2`, `urgencia: 3`, soma = 5 → alta). Consulta por `"Oficina"`: esperado por R3 = `False`. Como R3 vale "independentemente do estado ou da prioridade", esse caso negativo de fronteira é o que distingue uma implementação correta de uma com atalho por prioridade. Isso sustenta a escolha "com assistência" porque o valor esperado é derivado por mim de R3 antes de ler o teste gerado; se a IA escrevesse `True` nesse caso, a divergência seria detectada. Para C3, o cartão explicita: *"a regra nova, os dados afetados, as verificações e o responsável pela aprovação não foram confirmados"* — a ausência dessas informações impede qualquer liberação.
 
-**Alternativa para o cartão ___:** ___
-**Comparação com minha escolha (restrição e consequência):** ___
-**Limite da delegação e condição para rever a escolha:** ___
+**Alternativa para o cartão C1:** elaborar os critérios estritamente **sem IA**.
+**Comparação com minha escolha (restrição e consequência):** sem IA elimina o risco de o rascunho trazer regra inventada (ex.: ordenação por prioridade), mas a verificação contra R2 continua necessária nos dois caminhos. Como o contrato é curto e aprovado, a assistência só muda o esforço de redação; a responsabilidade e o critério de aceite são os mesmos.
+**Limite da delegação e condição para rever a escolha:** a IA não define valores esperados nem decide mudança de regra. Eu passaria C1 e C2 para "sem IA" se a ferramenta exigisse enviar código ou dados não autorizados. Em C3, eu reveria a decisão somente com a nova regra aprovada pelo dono de R3, testes do novo comportamento passando e plano de reversão definido.
 
-**Procedência/IA:** não utilizada / ferramenta e modelo visíveis: ___; tarefa delegada e contexto: ___; trecho aproveitado: ___; minha verificação/intervenção: ___. Use “não informado” para metadados indisponíveis. O raciocínio e a decisão registrados são meus.
+**Procedência/IA:** Antigravity (agy), modelo Flash 3.8 (modo high), e Claude Code (Anthropic), modelo Claude Opus 5.5, 02/10/2026. **Tarefas, em ordem:** (1) mesmo pedido às duas — engenharia reversa do repositório, explicação do caso e apoio às atividades; cada uma gerou uma versão deste registro; (2) Claude Code comparou as duas versões contra o contrato e a rubrica; (3) Claude Code consolidou o registro com a versão do Antigravity como base.
+**Trecho aproveitado:** do agy, a estrutura C1–C3, os exemplos de `chamados.json`, o indeferimento do C3 e a alternativa sem IA do C1; do Claude Code, a justificativa pelas condições do cartão, o oráculo independente, o caso FC-003 `fechado`, o responsável "a confirmar" e o plano de reversão.
+**Minha verificação/intervenção:** comparei as duas versões, escolhi a base e decidi os ajustes; conferi em `chamados.json` os estados de FC-001 (`aberto`), FC-002 (`em_andamento`) e FC-003 (`fechado`) e os departamentos usados no C2; refiz a soma 2+3=5 do FC-002 e confirmei por R1 que é alta; confrontei os esperados do C1 e do C2 com o texto de R2 e R3 em `caso/regras.md`. O raciocínio e a decisão registrados são meus.
 
-**Revisão:** [ ] três decisões; [ ] evidência localizada; [ ] alternativa e limite; [ ] até uma página.
+**Revisão:** [x] três decisões; [x] evidência localizada; [x] alternativa e limite; [ ] até uma página (conferir ao exportar).
